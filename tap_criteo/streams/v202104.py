@@ -9,7 +9,7 @@ from singer_sdk import typing as th
 from singer_sdk.plugin_base import PluginBase as TapBaseClass
 
 from tap_criteo.client import CriteoSearchStream, CriteoStream
-from tap_criteo.streams.reports import dimensions_mapping, metrics_mapping
+from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
 
@@ -70,11 +70,9 @@ class StatsReportStream(CriteoStream):
         report: dict,
     ):
         name = report["name"]
-        schema = th.PropertiesList(
-            *[dimensions_mapping[d] for d in report["dimensions"]],
-            *[metrics_mapping[m] for m in report["metrics"]],
-            th.Property("Currency", th.StringType),
-        ).to_dict()
+        schema = {"properties": {"Currency": {"type": "string"}}}
+        schema["properties"].update({k: analytics_type_mappings[k] for k in report["metrics"]})
+        schema["properties"].update({k: analytics_type_mappings[k] for k in report["dimensions"]})
 
         super().__init__(tap, name=name, schema=schema)
 
@@ -98,16 +96,8 @@ class StatsReportStream(CriteoStream):
         }
 
     def post_process(self, row: dict, context) -> dict:
-        if "Hour" in row:
-            hour = row.pop("Hour")
-            row["Hour"] = datetime.strptime(hour, "%m/%d/%Y %H:%M:%S")
-
-        for field in filter(lambda s: s.startswith("Clicks"), self.metrics):
-            value = row.pop(field)
-            row[field] = int(value)
-
-        for field in filter(lambda s: s.startswith("Displays"), self.metrics):
-            displays = row.pop(field)
-            row[field] = int(displays)
-
+        for key in row:
+            func = value_func_mapping.get(key)
+            if func:
+                row[key] = func(row[key])
         return row

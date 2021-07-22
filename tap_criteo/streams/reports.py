@@ -1,41 +1,86 @@
-from typing import Dict
+from datetime import datetime
+from decimal import Decimal
+from typing import Any, Callable, Dict
 
-from singer_sdk import typing as th
-from singer_sdk.helpers._classproperty import classproperty
 
-
-class DateType(th.JSONTypeHelper):
-    """Date type."""
-
-    @classproperty
-    def type_dict(cls) -> dict:
-        """Return dict describing the type."""
-        return {
-            "type": ["string"],
-            "format": "date",
-        }
-
-dimensions_mapping: Dict[str, th.Property] = {
-    "Adset": th.Property("Adset", th.StringType),
-    "AdsetId": th.Property("AdsetId", th.StringType),
-    "Campaign": th.Property("Campaign", th.StringType),
-    "CampaignId": th.Property("CampaignId", th.StringType),
-    "Advertiser": th.Property("Advertiser", th.StringType),
-    "AdvertiserId": th.Property("AdvertiserId", th.StringType),
-    "Category": th.Property("Category", th.StringType),
-    "CategoryId": th.Property("CategoryId", th.StringType),
-    "OS": th.Property("Os", th.StringType),
-    "Device": th.Property("Device", th.StringType),
-    "Currency": th.Property("Currency", th.StringType),
-    "Year": th.Property("Year", DateType),
-    "Month": th.Property("Month", DateType),
-    "Week": th.Property("Week", DateType),
-    "Day": th.Property("Day", DateType),
-    "Hour": th.Property("Hour", th.DateTimeType),
+analytics_type_mappings = {
+    "Adset": {"type": "string"},
+    "AdsetId": {"type": "string"},
+    "Campaign": {"type": "string"},
+    "CampaignId": {"type": "string"},
+    "Advertiser": {"type": "string"},
+    "AdvertiserId": {"type": "string"},
+    "Category": {"type": "string"},
+    "CategoryId": {"type": "string"},
+    "OS": {"type": "string"},
+    "Device": {"type": "string"},
+    "Currency": {"type": "string"},
+    "Year": {"type": "string", "format": "date"},
+    "Month": {"type": "string", "format": "date"},
+    "Week": {"type": "string", "format": "date"},
+    "Day": {"type": "string", "format": "date"},
+    "Hour": {"type": "string", "format": "date-time"},
+    "Clicks": {"type": "integer"},
+    "Displays": {"type": "integer"},
+    "Visits": {"type": "integer"},
+    "AdvertiserCost": {"type": "number"},
+    "SalesClientAttribution": {"type": "integer"},
+    "SalesAllClientAttribution": {"type": "integer"},
+    "SalesPc30d": {"type": "integer"},
+    "SalesAllPc30d": {"type": "integer"},
+    "SalesPv24h": {"type": "integer"},
+    "SalesAllPv24h": {"type": "integer"},
+    "SalesPc30dPv24h": {"type": "integer"},
+    "SalesAllPc30dPv24h": {"type": "integer"},
+    "SalesPc1d": {"type": "integer"},
+    "SalesAllPc1d": {"type": "integer"},
+    "SalesPc7d": {"type": "integer"},
+    "SalesAllPc7d": {"type": "integer"},
+    "RevenueGeneratedClientAttribution": {"type": "number"},
+    "RevenueGeneratedAllClientAttribution": {"type": "number"},
+    "RevenueGeneratedPc30d": {"type": "number"},
+    "RevenueGeneratedAllPc30d": {"type": "number"},
+    "RevenueGeneratedPv24h": {"type": "number"},
+    "RevenueGeneratedAllPv24h": {"type": "number"},
+    "RevenueGeneratedPc30dPv24h": {"type": "number"},
+    "RevenueGeneratedAllPc30dPv24h": {"type": "number"},
+    "RevenueGeneratedPc1d": {"type": "number"},
+    "RevenueGeneratedAllPc1d": {"type": "number"},
+    "RevenueGeneratedPc7d": {"type": "number"},
+    "RevenueGeneratedAllPc7d": {"type": "number"}
 }
 
-metrics_mapping: Dict[str, th.Property] = {
-    "Clicks": th.Property("Clicks", th.IntegerType),
-    "Displays": th.Property("Displays", th.IntegerType),
-    "Visits": th.Property("Visits", th.IntegerType),
+# TODO: reduce repetition here?
+value_func_mapping: Dict[str, Callable[[str], Any]] = {
+    "Date": lambda hour: datetime.strptime(hour, "%m/%d/%Y %H:%M:%S"),
+    "Clicks": int,
+    "Displays": int,
+    "Visits": int,
+    "AdvertiserCost": Decimal,
+    # Sales
+    "SalesClientAttribution": int,
+    "SalesAllClientAttribution": int,
+    "SalesPc30d": int,
+    "SalesAllPc30d": int,
+    "SalesPv24h": int,
+    "SalesAllPv24h": int,
+    "SalesPc30dPv24h": int,
+    "SalesAllPc30dPv24h": int,
+    "SalesPc1d": int,
+    "SalesAllPc1d": int,
+    "SalesPc7d": int,
+    "SalesAllPc7d": int,
+    # Revenue
+    "RevenueGeneratedClientAttribution": Decimal,
+    "RevenueGeneratedAllClientAttribution": Decimal,
+    "RevenueGeneratedPc30d": Decimal,
+    "RevenueGeneratedAllPc30d": Decimal,
+    "RevenueGeneratedPv24h": Decimal,
+    "RevenueGeneratedAllPv24h": Decimal,
+    "RevenueGeneratedPc30dPv24h": Decimal,
+    "RevenueGeneratedAllPc30dPv24h": Decimal,
+    "RevenueGeneratedPc1d": Decimal,
+    "RevenueGeneratedAllPc1d": Decimal,
+    "RevenueGeneratedPc7d": Decimal,
+    "RevenueGeneratedAllPc7d": Decimal,
 }
