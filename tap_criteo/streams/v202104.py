@@ -1,6 +1,6 @@
 """Stream type classes for Criteo version 2021.04."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 from dateutil.parser import parse
@@ -83,7 +83,7 @@ class StatsReportStream(CriteoStream):
 
     def prepare_request_payload(self, context, next_page_token) -> dict:
         start_date = parse(self.config["start_date"])
-        end_date = start_date + timedelta(days=10)
+        end_date = datetime.now()
 
         return {
             "dimensions": self.dimensions,
