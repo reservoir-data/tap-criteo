@@ -5,7 +5,7 @@ from singer_sdk.helpers._classproperty import classproperty
 
 
 class DateType(th.JSONTypeHelper):
-    """DateTime type."""
+    """Date type."""
 
     @classproperty
     def type_dict(cls) -> dict:
@@ -16,9 +16,14 @@ class DateType(th.JSONTypeHelper):
         }
 
 dimensions_mapping: Dict[str, th.Property] = {
+    "Adset": th.Property("Adset", th.StringType),
     "AdsetId": th.Property("AdsetId", th.StringType),
+    "Campaign": th.Property("Campaign", th.StringType),
     "CampaignId": th.Property("CampaignId", th.StringType),
+    "Advertiser": th.Property("Advertiser", th.StringType),
     "AdvertiserId": th.Property("AdvertiserId", th.StringType),
+    "Category": th.Property("Category", th.StringType),
+    "CategoryId": th.Property("CategoryId", th.StringType),
     "OS": th.Property("Os", th.StringType),
     "Device": th.Property("Device", th.StringType),
     "Currency": th.Property("Currency", th.StringType),
