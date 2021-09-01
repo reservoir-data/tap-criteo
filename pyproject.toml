@@ -13,7 +13,7 @@ python-dateutil = "^2.8.2"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.9.3"
-black = "^21.6b0"
+black = "^21.8b0"
 mypy = "^0.910"
 
 [tool.black]
