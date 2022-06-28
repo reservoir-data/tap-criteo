@@ -61,8 +61,7 @@ class TapCriteo(Tap):
         ]
 
         reports = [
-            REPORTS_BASE(tap=self, report=report)
-            for report in self.config["reports"]
+            REPORTS_BASE(tap=self, report=report) for report in self.config["reports"]
         ]
 
         return objects + reports

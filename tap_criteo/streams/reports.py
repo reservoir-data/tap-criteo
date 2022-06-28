@@ -2,7 +2,6 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Callable, Dict
 
-
 analytics_type_mappings = {
     "Adset": {"type": "string"},
     "AdsetId": {"type": "string"},
@@ -47,7 +46,7 @@ analytics_type_mappings = {
     "RevenueGeneratedPc1d": {"type": "number"},
     "RevenueGeneratedAllPc1d": {"type": "number"},
     "RevenueGeneratedPc7d": {"type": "number"},
-    "RevenueGeneratedAllPc7d": {"type": "number"}
+    "RevenueGeneratedAllPc7d": {"type": "number"},
 }
 
 # TODO: reduce repetition here?

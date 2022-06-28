@@ -4,7 +4,6 @@ from datetime import datetime
 from pathlib import Path
 
 from dateutil.parser import parse
-
 from singer_sdk import typing as th
 from singer_sdk.plugin_base import PluginBase as TapBaseClass
 
@@ -71,8 +70,12 @@ class StatsReportStream(CriteoStream):
     ):
         name = report["name"]
         schema = {"properties": {"Currency": {"type": "string"}}}
-        schema["properties"].update({k: analytics_type_mappings[k] for k in report["metrics"]})
-        schema["properties"].update({k: analytics_type_mappings[k] for k in report["dimensions"]})
+        schema["properties"].update(
+            {k: analytics_type_mappings[k] for k in report["metrics"]}
+        )
+        schema["properties"].update(
+            {k: analytics_type_mappings[k] for k in report["dimensions"]}
+        )
 
         super().__init__(tap, name=name, schema=schema)
 
