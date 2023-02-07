@@ -1,10 +1,12 @@
 """Stream type classes for Criteo version 2021.04."""
 
+from __future__ import annotations
+
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 from dateutil.parser import parse
-from singer_sdk import typing as th
 from singer_sdk.plugin_base import PluginBase as TapBaseClass
 
 from tap_criteo.client import CriteoSearchStream, CriteoStream
@@ -67,7 +69,13 @@ class StatsReportStream(CriteoStream):
         self,
         tap: TapBaseClass,
         report: dict,
-    ):
+    ) -> None:
+        """Initialize a stats report stream.
+
+        Args:
+            tap: The tap instance.
+            report: The report dictionary.
+        """
         name = report["name"]
         schema = {"properties": {"Currency": {"type": "string"}}}
         schema["properties"].update(
@@ -84,7 +92,20 @@ class StatsReportStream(CriteoStream):
         self.currency = report["currency"]
         self.primary_keys = self.dimensions
 
-    def prepare_request_payload(self, context, next_page_token) -> dict:
+    def prepare_request_payload(
+        self,
+        context: dict | None,
+        next_page_token: Any,
+    ) -> dict:
+        """Prepare request payload.
+
+        Args:
+            context: Stream context.
+            next_page_token: The next page value.
+
+        Returns:
+            Dictionary for the JSON body of the request.
+        """
         start_date = parse(self.config["start_date"])
         end_date = datetime.now()
 
@@ -98,7 +119,16 @@ class StatsReportStream(CriteoStream):
             "endDate": end_date.isoformat(),
         }
 
-    def post_process(self, row: dict, context) -> dict:
+    def post_process(self, row: dict, context: dict | None) -> dict:
+        """Process the record before emitting it.
+
+        Args:
+            row: Record dictionary.
+            context: Stream context.
+
+        Returns:
+            Mutated record dictionary.
+        """
         for key in row:
             func = value_func_mapping.get(key)
             if func:
