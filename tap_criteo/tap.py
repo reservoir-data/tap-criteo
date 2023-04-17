@@ -43,11 +43,13 @@ class TapCriteo(Tap):
                 th.ObjectType(
                     th.Property("name", th.StringType, required=True),
                     th.Property(
-                        "dimensions", th.ArrayType(th.StringType), required=True
+                        "dimensions",
+                        th.ArrayType(th.StringType),
+                        required=True,
                     ),
                     th.Property("metrics", th.ArrayType(th.StringType), required=True),
                     th.Property("currency", th.StringType, default="USD"),
-                )
+                ),
             ),
         ),
     ).to_dict()

@@ -1,8 +1,23 @@
 """Report fields."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Any, Callable, Dict
+
+UTC = timezone.utc
+
+
+def _parse_date(date: str) -> datetime:
+    """Parse date.
+
+    Args:
+        date: Date string.
+
+    Returns:
+        Parsed date.
+    """
+    return datetime.strptime(date, "%m/%d/%Y %H:%M:%S").replace(tzinfo=UTC)
+
 
 analytics_type_mappings = {
     "Adset": {"type": "string"},
@@ -53,7 +68,7 @@ analytics_type_mappings = {
 
 # TODO: reduce repetition here?
 value_func_mapping: Dict[str, Callable[[str], Any]] = {
-    "Date": lambda hour: datetime.strptime(hour, "%m/%d/%Y %H:%M:%S"),
+    "Date": _parse_date,
     "Clicks": int,
     "Displays": int,
     "Visits": int,

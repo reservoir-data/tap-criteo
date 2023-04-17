@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
-from singer_sdk import RESTStream
+import typing as t
+
 from singer_sdk.authenticators import OAuthAuthenticator
+
+if t.TYPE_CHECKING:
+    from singer_sdk import RESTStream
 
 
 class CriteoAuthenticator(OAuthAuthenticator):
@@ -24,7 +28,8 @@ class CriteoAuthenticator(OAuthAuthenticator):
 
     @classmethod
     def create_for_stream(
-        cls: type[CriteoAuthenticator], stream: RESTStream
+        cls: type[CriteoAuthenticator],
+        stream: RESTStream,
     ) -> CriteoAuthenticator:
         """Initialize authenticator from Singer stream instance.
 
