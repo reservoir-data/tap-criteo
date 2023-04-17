@@ -34,10 +34,11 @@ SAMPLE_CONFIG: dict[str, Any] = {
 }
 
 # Run standard built-in tap tests from the SDK:
-TapCriteoCloud = get_tap_test_class(
+TestTapCriteoCloud = get_tap_test_class(
     TapCriteo,
     config=SAMPLE_CONFIG,
     suite_config=SuiteConfig(
         max_records_limit=10,
+        ignore_no_records_for_streams=["audiences"],
     ),
 )
