@@ -2,17 +2,20 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from dateutil.parser import parse
-from singer_sdk.plugin_base import PluginBase as TapBaseClass
 
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
+if TYPE_CHECKING:
+    from singer_sdk.plugin_base import PluginBase as TapBaseClass
+
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
+UTC = timezone.utc
 
 
 class AudiencesStream(CriteoStream):
@@ -79,10 +82,10 @@ class StatsReportStream(CriteoStream):
         name = report["name"]
         schema = {"properties": {"Currency": {"type": "string"}}}
         schema["properties"].update(
-            {k: analytics_type_mappings[k] for k in report["metrics"]}
+            {k: analytics_type_mappings[k] for k in report["metrics"]},
         )
         schema["properties"].update(
-            {k: analytics_type_mappings[k] for k in report["dimensions"]}
+            {k: analytics_type_mappings[k] for k in report["dimensions"]},
         )
 
         super().__init__(tap, name=name, schema=schema)
@@ -94,8 +97,8 @@ class StatsReportStream(CriteoStream):
 
     def prepare_request_payload(
         self,
-        context: dict | None,
-        next_page_token: Any,
+        context: dict | None,  # noqa: ARG002
+        next_page_token: Any,  # noqa: ARG002, ANN401
     ) -> dict:
         """Prepare request payload.
 
@@ -107,7 +110,7 @@ class StatsReportStream(CriteoStream):
             Dictionary for the JSON body of the request.
         """
         start_date = parse(self.config["start_date"])
-        end_date = datetime.now()
+        end_date = datetime.now(UTC)
 
         return {
             "dimensions": self.dimensions,
@@ -119,7 +122,11 @@ class StatsReportStream(CriteoStream):
             "endDate": end_date.isoformat(),
         }
 
-    def post_process(self, row: dict, context: dict | None) -> dict:
+    def post_process(
+        self,
+        row: dict,
+        context: dict | None,  # noqa: ARG002
+    ) -> dict:
         """Process the record before emitting it.
 
         Args:

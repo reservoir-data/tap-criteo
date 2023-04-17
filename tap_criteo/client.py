@@ -50,8 +50,8 @@ class CriteoSearchStream(CriteoStream):
 
     def prepare_request_payload(
         self,
-        context: dict | None,
-        next_page_token: Any,
+        context: dict | None,  # noqa: ARG002
+        next_page_token: Any,  # noqa: ARG002, ANN401
     ) -> dict:
         """Prepare request payload.
 
