@@ -9,6 +9,7 @@ from singer_sdk.testing import SuiteConfig, get_tap_test_class
 from tap_criteo.tap import TapCriteo
 
 SAMPLE_CONFIG: dict[str, Any] = {
+    "start_date": "2021-06-01T00:00:00Z",
     "reports": [
         {
             "name": "daily_metrics",
