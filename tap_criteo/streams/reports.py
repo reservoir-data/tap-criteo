@@ -66,7 +66,8 @@ analytics_type_mappings = {
     "RevenueGeneratedAllPc7d": {"type": "number"},
 }
 
-# TODO: reduce repetition here?
+# TODO(edgarrmondragon): reduce repetition here?
+# https://github.com/edgarrmondragon/tap-criteo/issues/107
 value_func_mapping: Dict[str, Callable[[str], Any]] = {
     "Date": _parse_date,
     "Clicks": int,
