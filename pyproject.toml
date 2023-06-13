@@ -35,7 +35,8 @@ tap-criteo = 'tap_criteo.tap:TapCriteo.cli'
 
 [tool.ruff]
 ignore = [
-  "ANN101",
+  "ANN101",  # missing-type-self
+  "FIX002",  # line-contains-todo
 ]
 line-length = 88
 select = ["ALL"]
