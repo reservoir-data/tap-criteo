@@ -19,7 +19,7 @@ class CriteoStream(RESTStream):
 
     records_jsonpath = "$.data[*]"
 
-    primary_keys = ["id"]
+    primary_keys = ("id",)
 
     @property
     def authenticator(self) -> CriteoAuthenticator:
