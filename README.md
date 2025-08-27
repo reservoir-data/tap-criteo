@@ -7,7 +7,7 @@ Built with the Meltano [SDK](https://gitlab.com/meltano/sdk) for Singer Taps.
 ## Installation
 
 ```bash
-pipx install git+https://github.com/edgarrmondragon/tap-criteo.git
+pipx install git+https://github.com/reservoir-data/tap-criteo.git
 ```
 
 ## Configuration
