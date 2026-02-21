@@ -42,11 +42,11 @@ class CriteoStream(RESTStream):
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
 
-    # flatten attributes field to be top-level
+    # flatten attributes field
     def post_process(
         self,
         row: dict,
-        context: dict | None = None,
+        context: dict | None = None,  # noqa: ARG002
     ) -> dict | None:
         """Flatten the 'attributes' dictionary into top-level."""
         if "attributes" in row and isinstance(row["attributes"], dict):

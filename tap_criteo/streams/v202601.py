@@ -25,17 +25,13 @@ class AudiencesStream(CriteoSearchStream):
     path = "/2026-01/marketing-solutions/audiences/search"
     schema_filepath = SCHEMAS_DIR / "audience.json"
 
-    # override the CriteoSearchStream method to add body
+    # override to add body
     def prepare_request_payload(
         self,
         context: dict | None,  # noqa: ARG002
         next_page_token: Any | None,  # noqa: ARG002
     ) -> dict:
-        """Prepare request payload for audiences search.
-
-        The Audience API strictly requires the JSON:API format and
-        benefits from being scoped by advertiser IDs.
-        """
+        """Prepare request payload for audiences search."""
         advertiser_ids = self.config.get("advertiser_ids", [])
 
         return {
@@ -49,23 +45,33 @@ class AudiencesStream(CriteoSearchStream):
 class AdvertisersStream(CriteoStream):
     """Advertisers stream."""
 
-    # this is agnostic to the advertiser IDs in the config (will get all advertisers
-    # regardless of config)
-
     name = "advertisers"
     path = "/2026-01/advertisers/me"
     schema_filepath = SCHEMAS_DIR / "advertiser.json"
 
     def get_child_context(
-        self, record: dict, context: dict | None,  # noqa: ARG002
+        self,
+        record: dict,
+        context: dict | None,  # noqa: ARG002
     ) -> dict:
-        """Return a context dictionary for child streams.
-
-        This passes the advertiser's ID down to the AdsStream so it can
-        be injected into the URL path.
-        """
-        # maps to AdsStream
+        """Return a context dictionary for child streams."""
         return {"id": record["id"]}
+
+    def post_process(
+        self,
+        row: dict,
+        context: dict | None,  # noqa: ARG002
+    ) -> dict | None:
+        """Scope to provided advertisers."""
+        if "attributes" in row and isinstance(row["attributes"], dict):
+            attributes = row.pop("attributes")
+            row.update(attributes)
+
+        advertiser_ids = self.config.get("advertiser_ids", [])
+        if advertiser_ids and str(row.get("id")) not in advertiser_ids:
+            return None
+
+        return row
 
 
 class CampaignsStream(CriteoSearchStream):
