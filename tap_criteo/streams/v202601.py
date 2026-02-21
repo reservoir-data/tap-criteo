@@ -57,7 +57,7 @@ class AdvertisersStream(CriteoStream):
     schema_filepath = SCHEMAS_DIR / "advertiser.json"
 
     def get_child_context(
-        self, record: dict, context: dict | None  # noqa: ARG002
+        self, record: dict, context: dict | None,  # noqa: ARG002
     ) -> dict:
         """Return a context dictionary for child streams.
 
