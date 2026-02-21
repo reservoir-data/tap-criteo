@@ -184,12 +184,10 @@ class AdsStream(CriteoStream):
     """Ads stream."""
 
     name = "ads"
-
     path = "/2026-01/marketing-solutions/advertisers/{id}/ads"
     schema_filepath = SCHEMAS_DIR / "ad.json"
 
     parent_stream_type = AdvertisersStream
-
     ignore_parent_replication_key = True
 
     def get_url_params(
@@ -201,11 +199,7 @@ class AdsStream(CriteoStream):
         params: dict = {}
 
         params["limit"] = 50
-
-        if next_page_token:
-            params["offset"] = next_page_token
-        else:
-            params["offset"] = 0
+        params["offset"] = next_page_token if next_page_token else 0
 
         return params
 
@@ -214,12 +208,10 @@ class CreativesStream(CriteoStream):
     """Creatives stream."""
 
     name = "creatives"
-
     path = "/2026-01/marketing-solutions/advertisers/{id}/creatives"
     schema_filepath = SCHEMAS_DIR / "creative.json"
 
     parent_stream_type = AdvertisersStream
-
     ignore_parent_replication_key = True
 
     def get_url_params(
@@ -231,10 +223,6 @@ class CreativesStream(CriteoStream):
         params: dict = {}
 
         params["limit"] = 50
-
-        if next_page_token:
-            params["offset"] = next_page_token
-        else:
-            params["offset"] = 0
+        params["offset"] = next_page_token if next_page_token else 0
 
         return params
