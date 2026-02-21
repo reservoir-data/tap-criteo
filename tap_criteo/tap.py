@@ -6,25 +6,19 @@ from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
 from tap_criteo.client import CriteoStream
-from tap_criteo.streams import v202007, v202104, v202107
+from tap_criteo.streams import v202601
 
 OBJECT_STREAMS: Dict[str, List[Type[CriteoStream]]] = {
-    "legacy": [
-        v202007.AudiencesStream,
-        v202007.CampaignsStream,
-        v202007.CategoriesStream,
-    ],
     "current": [
-        v202104.AudiencesStream,
-        v202104.AdvertisersStream,
-        v202104.AdSetsStream,
-    ],
-    "preview": [
-        v202107.CampaignsStream,
+        v202601.AudiencesStream,
+        v202601.AdvertisersStream,
+        v202601.CampaignsStream,
+        v202601.AdSetsStream,
+        v202601.AdsStream,
     ],
 }
 
-REPORTS_BASE = v202104.StatsReportStream
+REPORTS_BASE = v202601.StatsReportStream
 
 
 class TapCriteo(Tap):
@@ -62,7 +56,7 @@ class TapCriteo(Tap):
         """
         objects = [
             stream_class(tap=self)
-            for api in ("current", "preview")
+            for api in ("current",)
             for stream_class in OBJECT_STREAMS[api]
         ]
 
