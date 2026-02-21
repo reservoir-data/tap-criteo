@@ -49,13 +49,16 @@ class AudiencesStream(CriteoSearchStream):
 class AdvertisersStream(CriteoStream):
     """Advertisers stream."""
 
-    # this is agnostic to the advertiser IDs in the config (will get all advertisers regardless of config)
+    # this is agnostic to the advertiser IDs in the config (will get all advertisers
+    # regardless of config)
 
     name = "advertisers"
     path = "/2026-01/advertisers/me"
     schema_filepath = SCHEMAS_DIR / "advertiser.json"
 
-    def get_child_context(self, record: dict, context: dict | None) -> dict:
+    def get_child_context(
+        self, record: dict, context: dict | None  # noqa: ARG002
+    ) -> dict:
         """Return a context dictionary for child streams.
 
         This passes the advertiser's ID down to the AdsStream so it can
@@ -185,7 +188,37 @@ class AdsStream(CriteoStream):
 
     def get_url_params(
         self,
-        context: dict | None,
+        context: dict | None,  # noqa: ARG002
+        next_page_token: Any | None,
+    ) -> dict[str, Any]:
+        """Return a dictionary of values to be used in URL parameterization."""
+        params: dict = {}
+
+        params["limit"] = 50
+
+        if next_page_token:
+            params["offset"] = next_page_token
+        else:
+            params["offset"] = 0
+
+        return params
+
+
+class CreativesStream(CriteoStream):
+    """Creatives stream."""
+
+    name = "creatives"
+
+    path = "/2026-01/marketing-solutions/advertisers/{id}/creatives"
+    schema_filepath = SCHEMAS_DIR / "creative.json"
+
+    parent_stream_type = AdvertisersStream
+
+    ignore_parent_replication_key = True
+
+    def get_url_params(
+        self,
+        context: dict | None,  # noqa: ARG002
         next_page_token: Any | None,
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
