@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["string", "null"],
+      "description": "Unique identifier of this resource."
+    },
+    "type": {
+      "type": ["string", "null"]
+    },
+    "attributes": {
+      "type": ["object", "null"],
+      "properties": {
+        "adSetId": {
+          "type": ["string", "null"],
+          "description": "The id of the Ad Set binded to this Ad"
+        },
+        "creativeId": {
+          "type": ["string", "null"],
+          "description": "The id of the Creative binded to this Ad"
+        },
+        "description": {
+          "type": ["string", "null"],
+          "description": "The description of the ad"
+        },
+        "endDate": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "id": {
+          "type": ["string", "null"],
+          "description": "Unique identifier (duplicate of the parent id)."
+        },
+        "inventoryType": {
+          "type": ["string", "null"],
+          "description": "The inventory the Ad belongs to. Display or Native."
+        },
+        "name": {
+          "type": ["string", "null"],
+          "description": "The name of the ad"
+        },
+        "startDate": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

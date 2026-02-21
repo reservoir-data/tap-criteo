@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": ["string", "null"]
+    },
+    "type": {
+      "type": ["string", "null"]
+    },
+    "attributes": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": {
+          "type": ["string", "null"],
+          "description": "Id of the entity (duplicate of the parent id)."
+        },
+        "name": {
+          "type": ["string", "null"]
+        },
+        "advertiserId": {
+          "type": ["string", "null"]
+        },
+        "goal": {
+          "type": ["string", "null"]
+        },
+        "budgetAutomation": {
+          "type": ["object", "null"],
+          "properties": {
+            "enabled": {
+              "type": ["boolean", "null"]
+            },
+            "automatedBudgetConfiguration": {
+              "type": ["object", "null"],
+              "properties": {
+                "adSetOptimizationObjective": {
+                  "type": ["string", "null"]
+                }
+              }
+            }
+          }
+        },
+        "spendLimit": {
+          "type": ["object", "null"],
+          "properties": {
+            "spendLimitType": {
+              "type": ["string", "null"]
+            },
+            "spendLimitRenewal": {
+              "type": ["string", "null"]
+            },
+            "spendLimitAmount": {
+              "type": ["object", "null"],
+              "properties": {
+                "value": {
+                  "type": ["number", "null"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
