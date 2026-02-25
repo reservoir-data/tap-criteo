@@ -7,15 +7,21 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+
 jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
       NOXSESSION: ${{ matrix.session }}-${{ matrix.python-version }}
-      FORCE_COLOR: "1"
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
         - {python-version: "3.14", session: "tests"}
@@ -30,27 +36,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+    - uses: astral-sh/setup-uv@eac588ad8def6316056a12d4907a9d4d84ff7a3b # v7.3.0
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Upgrade pip
-      run: |
-        pip install pip
-        pip --version
-
-    - name: Install Poetry
-      run: |
-        pipx install poetry
-        pipx inject poetry poetry-dynamic-versioning[plugin]
-        poetry --version
-        poetry self show plugins
-
     - name: Install Nox
       run: |
-        pipx install nox
-        pipx inject nox nox-poetry
+        uv tool install nox
         nox --version
 
     - name: Run Nox

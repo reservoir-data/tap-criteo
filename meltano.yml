@@ -1,5 +1,5 @@
 version: 1
-send_anonymous_usage_stats: no
+send_anonymous_usage_stats: false
 project_id: tap-criteo
 
 plugins:
@@ -11,6 +11,7 @@ plugins:
     - state
     - catalog
     - discover
+    - structured-logging
     settings:
     - name: client_id
       kind: password
