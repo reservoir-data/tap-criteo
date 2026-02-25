@@ -18,27 +18,38 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 GITHUB_ACTIONS = "GITHUB_ACTIONS"
+PYPROJECT = nox.project.load_toml("pyproject.toml")
+# PYTHON_VERSIONS = nox.project.python_versions(PYPROJECT)  # TODO: Add PEP 621 project classifiers  # noqa: E501, ERA001
 
-package = "tap-criteo"
 src_dir = "tap_criteo"
 tests_dir = "tests"
 
-python_versions = ["3.11", "3.10", "3.9", "3.8", "3.7"]
-main_python_version = "3.10"
-locations = src_dir, tests_dir, "noxfile.py"
+nox.needs_version = ">=2025.2.9"
+nox.options.default_venv_backend = "uv"
 nox.options.sessions = (
     "mypy",
     "tests",
 )
 
+python_versions = [
+    "3.14",
+    "3.13",
+    "3.12",
+    "3.11",
+    "3.10",
+]
+main_python_version = "3.14"
+locations = src_dir, tests_dir, "noxfile.py"
 
-@session(python=python_versions)
+
+@session(python=main_python_version)
 def mypy(session: Session) -> None:
     """Check types with mypy."""
     args = session.posargs or [src_dir, tests_dir]
     session.install(".")
     session.install(
         "mypy",
+        "types-python-dateutil",
         "types-requests",
     )
     session.run("mypy", *args)
