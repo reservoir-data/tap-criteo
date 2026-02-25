@@ -12,7 +12,7 @@ from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
 if TYPE_CHECKING:
-    from singer_sdk.plugin_base import PluginBase as TapBaseClass
+    from singer_sdk.tap_base import Tap
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
 UTC = timezone.utc
@@ -70,7 +70,7 @@ class StatsReportStream(CriteoStream):
 
     def __init__(
         self,
-        tap: TapBaseClass,
+        tap: Tap,
         report: dict,
     ) -> None:
         """Initialize a stats report stream.
@@ -125,8 +125,8 @@ class StatsReportStream(CriteoStream):
     def post_process(
         self,
         row: dict,
-        context: dict | None,  # noqa: ARG002
-    ) -> dict:
+        context: dict | None = None,  # noqa: ARG002
+    ) -> dict | None:
         """Process the record before emitting it.
 
         Args:
@@ -136,8 +136,8 @@ class StatsReportStream(CriteoStream):
         Returns:
             Mutated record dictionary.
         """
-        for key in row:
+        for key, value in row.items():
             func = value_func_mapping.get(key)
             if func:
-                row[key] = func(row[key])
+                row[key] = func(value)
         return row

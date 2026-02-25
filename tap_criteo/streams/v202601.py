@@ -12,7 +12,7 @@ from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
 if TYPE_CHECKING:
-    from singer_sdk.plugin_base import PluginBase as TapBaseClass
+    from singer_sdk.tap_base import Tap
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas/v2026.01"
 UTC = timezone.utc
@@ -29,7 +29,7 @@ class AudiencesStream(CriteoSearchStream):
     def prepare_request_payload(
         self,
         context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,  # noqa: ARG002
+        next_page_token: Any | None,  # noqa: ANN401, ARG002
     ) -> dict:
         """Prepare request payload for audiences search."""
         advertiser_ids = self.config.get("advertiser_ids", [])
@@ -55,12 +55,12 @@ class AdvertisersStream(CriteoStream):
         context: dict | None,  # noqa: ARG002
     ) -> dict:
         """Return a context dictionary for child streams."""
-        return {"id": record["id"]}
+        return {"advertiserId": record["id"]}
 
     def post_process(
         self,
         row: dict,
-        context: dict | None,  # noqa: ARG002
+        context: dict | None = None,  # noqa: ARG002
     ) -> dict | None:
         """Scope to provided advertisers."""
         if "attributes" in row and isinstance(row["attributes"], dict):
@@ -100,7 +100,7 @@ class StatsReportStream(CriteoStream):
 
     def __init__(
         self,
-        tap: TapBaseClass,
+        tap: Tap,
         report: dict,
     ) -> None:
         """Initialize a stats report stream.
@@ -162,8 +162,8 @@ class StatsReportStream(CriteoStream):
     def post_process(
         self,
         row: dict,
-        context: dict | None,  # noqa: ARG002
-    ) -> dict:
+        context: dict | None = None,  # noqa: ARG002
+    ) -> dict | None:
         """Process the record before emitting it.
 
         Args:
@@ -173,10 +173,10 @@ class StatsReportStream(CriteoStream):
         Returns:
             Mutated record dictionary.
         """
-        for key in row:
+        for key, value in row.items():
             func = value_func_mapping.get(key)
             if func:
-                row[key] = func(row[key])
+                row[key] = func(value)
         return row
 
 
@@ -184,7 +184,7 @@ class AdsStream(CriteoStream):
     """Ads stream."""
 
     name = "ads"
-    path = "/2026-01/marketing-solutions/advertisers/{id}/ads"
+    path = "/2026-01/marketing-solutions/advertisers/{advertiserId}/ads"
     schema_filepath = SCHEMAS_DIR / "ad.json"
 
     parent_stream_type = AdvertisersStream
@@ -193,13 +193,13 @@ class AdsStream(CriteoStream):
     def get_url_params(
         self,
         context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,
+        next_page_token: Any | None,  # noqa: ANN401
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {}
 
         params["limit"] = 50
-        params["offset"] = next_page_token if next_page_token else 0
+        params["offset"] = next_page_token or 0
 
         return params
 
@@ -208,7 +208,7 @@ class CreativesStream(CriteoStream):
     """Creatives stream."""
 
     name = "creatives"
-    path = "/2026-01/marketing-solutions/advertisers/{id}/creatives"
+    path = "/2026-01/marketing-solutions/advertisers/{advertiserId}/creatives"
     schema_filepath = SCHEMAS_DIR / "creative.json"
 
     parent_stream_type = AdvertisersStream
@@ -217,12 +217,12 @@ class CreativesStream(CriteoStream):
     def get_url_params(
         self,
         context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,
+        next_page_token: Any | None,  # noqa: ANN401
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {}
 
         params["limit"] = 50
-        params["offset"] = next_page_token if next_page_token else 0
+        params["offset"] = next_page_token or 0
 
         return params

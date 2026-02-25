@@ -1,67 +1,70 @@
 {
-   "type":"object",
-   "properties":{
-      "id":{
-         "type":[
+   "type": "object",
+   "properties": {
+      "id": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"Unique identifier of this resource."
+         "description": "Unique identifier of this resource."
       },
-      "type":{
-         "type":[
+      "type": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "adSetId":{
-         "type":[
+      "adSetId": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"The id of the Ad Set binded to this Ad"
+         "description": "The id of the Ad Set binded to this Ad"
       },
-      "creativeId":{
-         "type":[
+      "creativeId": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"The id of the Creative binded to this Ad"
+         "description": "The id of the Creative binded to this Ad"
       },
-      "description":{
-         "type":[
+      "description": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"The description of the ad"
+         "description": "The description of the ad"
       },
-      "endDate":{
-         "type":[
+      "endDate": {
+         "type": [
             "string",
             "null"
          ],
-         "format":"date-time"
+         "format": "date-time"
       },
-      "inventoryType":{
-         "type":[
+      "inventoryType": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"The inventory the Ad belongs to. Display or Native."
+         "description": "The inventory the Ad belongs to. Display or Native."
       },
-      "name":{
-         "type":[
+      "name": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"The name of the ad"
+         "description": "The name of the ad"
       },
-      "startDate":{
-         "type":[
+      "startDate": {
+         "type": [
             "string",
             "null"
          ],
-         "format":"date-time"
+         "format": "date-time"
+      },
+      "advertiserId": {
+         "type": "string"
       }
    }
 }

@@ -1,14 +1,17 @@
 """Criteo tap class."""
+from __future__ import annotations
 
-from typing import Dict, List, Type
+from typing import TYPE_CHECKING
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
-from tap_criteo.client import CriteoStream
 from tap_criteo.streams import v202601
 
-OBJECT_STREAMS: Dict[str, List[Type[CriteoStream]]] = {
+if TYPE_CHECKING:
+    from tap_criteo.client import CriteoStream
+
+OBJECT_STREAMS: dict[str, list[type[CriteoStream]]] = {
     "current": [
         v202601.AudiencesStream,
         v202601.AdvertisersStream,
@@ -49,7 +52,7 @@ class TapCriteo(Tap):
         ),
     ).to_dict()
 
-    def discover_streams(self) -> List[Stream]:
+    def discover_streams(self) -> list[Stream]:
         """Return a list of discovered streams.
 
         Returns:

@@ -1,8 +1,9 @@
 """Report fields."""
+from __future__ import annotations
 
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 UTC = timezone.utc
 
@@ -329,7 +330,7 @@ analytics_type_mappings = {
 }
 
 
-value_func_mapping: Dict[str, Callable[[str], Any]] = {
+value_func_mapping: dict[str, Callable[[str], Any]] = {
     "Date": _parse_date,
     # --- Core Metrics ---
     "Clicks": int,
@@ -379,9 +380,8 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
     "CostPerVisitPV1D": Decimal,
     "CostPerQualifiedVisit": Decimal,
     # --- Dynamic Rate/Currency Metric Groups (All Decimals) ---
-    **{
-        k: Decimal
-        for k in [
+    **dict.fromkeys(
+        [
             "RevenueGeneratedClientAttribution",
             "RevenueGeneratedAllClientAttribution",
             "RevenueGeneratedPc30d",
@@ -415,11 +415,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "AdvertiserAllValue",
             "CostOfAdvertiserValue",
             "CostOfAdvertiserValueAll",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "RoasPc30d",
             "RoasAllPc30d",
             "RoasPv24h",
@@ -451,11 +451,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "ReturnOnAdvertiserSpendingPi",
             "ReturnOnAdvertiserSpendingOfflinePc",
             "ReturnOnAdvertiserSpendingOfflinePv",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "CostPerOrderPc30d",
             "CostPerOrderAllPc30d",
             "CostPerOrderPv24h",
@@ -476,11 +476,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "CostPerOrderAllPc30dClientAttribution",
             "CostPerOrderPi",
             "PostInstallCostPerOrder",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "ConversionRatePc30d",
             "ConversionRateAllPc30d",
             "ConversionRatePv24h",
@@ -501,11 +501,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "ConversionRateAllPc30dClientAttribution",
             "ConversionRatePiPcPv",
             "PostInstallConversionRate",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "ECosPc30d",
             "ECosAllPc30d",
             "ECosPv24h",
@@ -526,11 +526,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "ECosAllPc30dClientAttribution",
             "CostOfSalePi",
             "PostInstallCostOfSale",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "AverageCartPc30d",
             "AverageCartAllPc30d",
             "AverageCartPv24h",
@@ -549,11 +549,11 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "AverageCartAllClientAttribution",
             "AverageCartPc30dClientAttribution",
             "AverageCartAllPc30dClientAttribution",
-        ]
-    },
-    **{
-        k: Decimal
-        for k in [
+        ],
+        Decimal,
+    ),
+    **dict.fromkeys(
+        [
             "CacPc30d",
             "CacPv24h",
             "CacPc7d",
@@ -565,12 +565,12 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "CacPc7dPv24h",
             "CacLc30d",
             "CacClientAttribution",
-        ]
-    },
+        ],
+        Decimal,
+    ),
     # --- Dynamic Sales Metric Groups (All Integers) ---
-    **{
-        k: int
-        for k in [
+    **dict.fromkeys(
+        [
             "SalesClientAttribution",
             "SalesAllClientAttribution",
             "SalesPc30d",
@@ -604,6 +604,7 @@ value_func_mapping: Dict[str, Callable[[str], Any]] = {
             "OmnichannelSalesPv24h",
             "OmnichannelSalesAllPv24h",
             "OmnichannelSalesClientAttribution",
-        ]
-    },
+        ],
+        int,
+    ),
 }

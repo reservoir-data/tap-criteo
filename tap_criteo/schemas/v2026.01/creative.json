@@ -1,189 +1,186 @@
 {
-   "type":"object",
-   "properties":{
-      "id":{
-         "type":[
+   "type": "object",
+   "properties": {
+      "id": {
+         "type": [
             "string",
             "null"
          ],
-         "description":"Unique identifier of this resource."
+         "description": "Unique identifier of this resource."
       },
-      "type":{
-         "type":[
+      "type": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "advertiserId":{
-         "type":[
+      "advertiserId": {
+         "type": "string"
+      },
+      "author": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "author":{
-         "type":[
+      "datasetId": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "datasetId":{
-         "type":[
+      "description": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "description":{
-         "type":[
+      "format": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "format":{
-         "type":[
+      "name": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "name":{
-         "type":[
+      "status": {
+         "type": [
             "string",
             "null"
          ]
       },
-      "status":{
-         "type":[
-            "string",
-            "null"
-         ]
-      },
-      "adaptiveAttributes":{
-         "type":[
+      "adaptiveAttributes": {
+         "type": [
             "object",
             "null"
          ],
-         "properties":{
-            "callsToAction":{
-               "type":[
+         "properties": {
+            "callsToAction": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "string",
                      "null"
                   ]
                }
             },
-            "colors":{
-               "type":[
+            "colors": {
+               "type": [
                   "object",
                   "null"
                ],
-               "properties":{
-                  "backgroundColor":{
-                     "type":[
+               "properties": {
+                  "backgroundColor": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   },
-                  "ctaBackgroundColor":{
-                     "type":[
+                  "ctaBackgroundColor": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   },
-                  "ctaTextColor":{
-                     "type":[
+                  "ctaTextColor": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   },
-                  "logoAreaAndTitleColor":{
-                     "type":[
+                  "logoAreaAndTitleColor": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   },
-                  "text1Color":{
-                     "type":[
+                  "text1Color": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   },
-                  "text2Color":{
-                     "type":[
+                  "text2Color": {
+                     "type": [
                         "string",
                         "null"
                      ]
                   }
                }
             },
-            "descriptionFont":{
-               "type":[
+            "descriptionFont": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "descriptionText":{
-               "type":[
+            "descriptionText": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "headlineFont":{
-               "type":[
+            "headlineFont": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "headlineText":{
-               "type":[
+            "headlineText": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "imageDisplay":{
-               "type":[
+            "imageDisplay": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "imageSets":{
-               "type":[
+            "imageSets": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "object",
                      "null"
                   ],
-                  "properties":{
-                     "headlineText":{
-                        "type":[
+                  "properties": {
+                     "headlineText": {
+                        "type": [
                            "string",
                            "null"
                         ]
                      },
-                     "images":{
-                        "type":[
+                     "images": {
+                        "type": [
                            "array",
                            "null"
                         ],
-                        "items":{
-                           "type":[
+                        "items": {
+                           "type": [
                               "object",
                               "null"
                            ],
-                           "properties":{
-                              "shape":{
-                                 "type":[
+                           "properties": {
+                              "shape": {
+                                 "type": [
                                     "string",
                                     "null"
                                  ]
                               },
-                              "url":{
-                                 "type":[
+                              "url": {
+                                 "type": [
                                     "string",
                                     "null"
                                  ]
@@ -194,201 +191,201 @@
                   }
                }
             },
-            "landingPageUrl":{
-               "type":[
+            "landingPageUrl": {
+               "type": [
                   "string",
                   "null"
                ],
-               "format":"uri"
+               "format": "uri"
             },
-            "layouts":{
-               "type":[
+            "layouts": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "string",
                      "null"
                   ]
                }
             },
-            "logos":{
-               "type":[
+            "logos": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "object",
                      "null"
                   ],
-                  "properties":{
-                     "shape":{
-                        "type":[
+                  "properties": {
+                     "shape": {
+                        "type": [
                            "string",
                            "null"
                         ]
                      },
-                     "url":{
-                        "type":[
+                     "url": {
+                        "type": [
                            "string",
                            "null"
                         ],
-                        "format":"uri"
+                        "format": "uri"
                      }
                   }
                }
             },
-            "videos":{
-               "type":[
+            "videos": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "object",
                      "null"
                   ],
-                  "properties":{
-                     "duration":{
-                        "type":[
+                  "properties": {
+                     "duration": {
+                        "type": [
                            "number",
                            "null"
                         ]
                      },
-                     "shape":{
-                        "type":[
+                     "shape": {
+                        "type": [
                            "string",
                            "null"
                         ]
                      },
-                     "url":{
-                        "type":[
+                     "url": {
+                        "type": [
                            "string",
                            "null"
                         ],
-                        "format":"uri"
+                        "format": "uri"
                      }
                   }
                }
             }
          }
       },
-      "dynamicAttributes":{
-         "type":[
+      "dynamicAttributes": {
+         "type": [
             "object",
             "null"
          ],
-         "properties":{
-            "bodyTextColor":{
-               "type":[
+         "properties": {
+            "bodyTextColor": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "callsToAction":{
-               "type":[
+            "callsToAction": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "string",
                      "null"
                   ]
                }
             },
-            "creativeBackgroundColor":{
-               "type":[
+            "creativeBackgroundColor": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "logos":{
-               "type":[
+            "logos": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "object",
                      "null"
                   ],
-                  "properties":{
-                     "shape":{
-                        "type":[
+                  "properties": {
+                     "shape": {
+                        "type": [
                            "string",
                            "null"
                         ]
                      },
-                     "url":{
-                        "type":[
+                     "url": {
+                        "type": [
                            "string",
                            "null"
                         ],
-                        "format":"uri"
+                        "format": "uri"
                      }
                   }
                }
             },
-            "pricesColor":{
-               "type":[
+            "pricesColor": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "primaryFont":{
-               "type":[
+            "primaryFont": {
+               "type": [
                   "string",
                   "null"
                ]
             },
-            "productImageDisplay":{
-               "type":[
+            "productImageDisplay": {
+               "type": [
                   "string",
                   "null"
                ]
             }
          }
       },
-      "htmlTagAttributes":{
-         "type":[
+      "htmlTagAttributes": {
+         "type": [
             "object",
             "null"
          ],
-         "properties":{
-            "tags":{
-               "type":[
+         "properties": {
+            "tags": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "object",
                      "null"
                   ],
-                  "properties":{
-                     "htmlTag":{
-                        "type":[
+                  "properties": {
+                     "htmlTag": {
+                        "type": [
                            "string",
                            "null"
                         ]
                      },
-                     "size":{
-                        "type":[
+                     "size": {
+                        "type": [
                            "object",
                            "null"
                         ],
-                        "properties":{
-                           "height":{
-                              "type":[
+                        "properties": {
+                           "height": {
+                              "type": [
                                  "integer",
                                  "null"
                               ]
                            },
-                           "width":{
-                              "type":[
+                           "width": {
+                              "type": [
                                  "integer",
                                  "null"
                               ]
@@ -400,26 +397,26 @@
             }
          }
       },
-      "imageAttributes":{
-         "type":[
+      "imageAttributes": {
+         "type": [
             "object",
             "null"
          ],
-         "properties":{
-            "landingPageUrl":{
-               "type":[
+         "properties": {
+            "landingPageUrl": {
+               "type": [
                   "string",
                   "null"
                ],
-               "format":"uri"
+               "format": "uri"
             },
-            "urls":{
-               "type":[
+            "urls": {
+               "type": [
                   "array",
                   "null"
                ],
-               "items":{
-                  "type":[
+               "items": {
+                  "type": [
                      "string",
                      "null"
                   ]
