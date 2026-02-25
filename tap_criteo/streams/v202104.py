@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -11,7 +12,13 @@ from dateutil.parser import parse
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
 if TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context
     from singer_sdk.tap_base import Tap
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
@@ -66,8 +73,9 @@ class StatsReportStream(CriteoStream):
     name = "statistics"
     path = "/2021-04/statistics/report"
     records_jsonpath = "$.Rows[*]"
-    rest_method = "post"
+    http_method = "post"
 
+    @override
     def __init__(
         self,
         tap: Tap,
@@ -95,10 +103,11 @@ class StatsReportStream(CriteoStream):
         self.currency = report["currency"]
         self.primary_keys = self.dimensions
 
+    @override
     def prepare_request_payload(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any,  # noqa: ARG002, ANN401
+        context: Context | None,
+        next_page_token: Any,
     ) -> dict:
         """Prepare request payload.
 
@@ -122,10 +131,11 @@ class StatsReportStream(CriteoStream):
             "endDate": end_date.isoformat(),
         }
 
+    @override
     def post_process(
         self,
         row: dict,
-        context: dict | None = None,  # noqa: ARG002
+        context: Context | None = None,
     ) -> dict | None:
         """Process the record before emitting it.
 

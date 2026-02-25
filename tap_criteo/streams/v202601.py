@@ -2,19 +2,30 @@
 
 from __future__ import annotations
 
+import sys
 from datetime import datetime, timezone
-from pathlib import Path
+from importlib.resources import files
 from typing import TYPE_CHECKING, Any
 
 from dateutil.parser import parse
+from singer_sdk import SchemaDirectory, StreamSchema
+from singer_sdk.pagination import BaseOffsetPaginator
 
+from tap_criteo import schemas
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
 if TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context, Record
     from singer_sdk.tap_base import Tap
 
-SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas/v2026.01"
+PAGE_SIZE = 50
+SCHEMAS_DIR = SchemaDirectory(files(schemas) / "v2026.01")
 UTC = timezone.utc
 
 
@@ -23,13 +34,13 @@ class AudiencesStream(CriteoSearchStream):
 
     name = "audiences"
     path = "/2026-01/marketing-solutions/audiences/search"
-    schema_filepath = SCHEMAS_DIR / "audience.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="audience")
 
-    # override to add body
+    @override
     def prepare_request_payload(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,  # noqa: ANN401, ARG002
+        context: Context | None,
+        next_page_token: Any | None,
     ) -> dict:
         """Prepare request payload for audiences search."""
         advertiser_ids = self.config.get("advertiser_ids", [])
@@ -47,20 +58,22 @@ class AdvertisersStream(CriteoStream):
 
     name = "advertisers"
     path = "/2026-01/advertisers/me"
-    schema_filepath = SCHEMAS_DIR / "advertiser.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="advertiser")
 
+    @override
     def get_child_context(
         self,
-        record: dict,
-        context: dict | None,  # noqa: ARG002
+        record: Record,
+        context: Context | None,
     ) -> dict:
         """Return a context dictionary for child streams."""
         return {"advertiserId": record["id"]}
 
+    @override
     def post_process(
         self,
         row: dict,
-        context: dict | None = None,  # noqa: ARG002
+        context: Context | None = None,
     ) -> dict | None:
         """Scope to provided advertisers."""
         if "attributes" in row and isinstance(row["attributes"], dict):
@@ -79,7 +92,7 @@ class CampaignsStream(CriteoSearchStream):
 
     name = "campaigns"
     path = "/2026-01/marketing-solutions/campaigns/search"
-    schema_filepath = SCHEMAS_DIR / "campaign.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="campaign")
 
 
 class AdSetsStream(CriteoSearchStream):
@@ -87,7 +100,7 @@ class AdSetsStream(CriteoSearchStream):
 
     name = "ad_sets"
     path = "/2026-01/marketing-solutions/ad-sets/search"
-    schema_filepath = SCHEMAS_DIR / "ad_set.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="ad_set")
 
 
 class StatsReportStream(CriteoStream):
@@ -96,8 +109,9 @@ class StatsReportStream(CriteoStream):
     name = "statistics"
     path = "/2026-01/statistics/report"
     records_jsonpath = "$.Rows[*]"
-    rest_method = "post"
+    http_method = "post"
 
+    @override
     def __init__(
         self,
         tap: Tap,
@@ -125,10 +139,11 @@ class StatsReportStream(CriteoStream):
         self.currency = report["currency"]
         self.primary_keys = self.dimensions
 
+    @override
     def prepare_request_payload(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any,  # noqa: ARG002, ANN401
+        context: Context | None,
+        next_page_token: Any,
     ) -> dict:
         """Prepare request payload.
 
@@ -159,10 +174,11 @@ class StatsReportStream(CriteoStream):
 
         return payload
 
+    @override
     def post_process(
         self,
         row: dict,
-        context: dict | None = None,  # noqa: ARG002
+        context: Context | None = None,
     ) -> dict | None:
         """Process the record before emitting it.
 
@@ -185,20 +201,26 @@ class AdsStream(CriteoStream):
 
     name = "ads"
     path = "/2026-01/marketing-solutions/advertisers/{advertiserId}/ads"
-    schema_filepath = SCHEMAS_DIR / "ad.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="ad")
 
     parent_stream_type = AdvertisersStream
     ignore_parent_replication_key = True
 
+    @override
+    def get_new_paginator(self) -> BaseOffsetPaginator:
+        """Return a new paginator for this API endpoint."""
+        return BaseOffsetPaginator(start_value=0, page_size=PAGE_SIZE)
+
+    @override
     def get_url_params(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,  # noqa: ANN401
+        context: Context | None,
+        next_page_token: int | None,
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {}
 
-        params["limit"] = 50
+        params["limit"] = PAGE_SIZE
         params["offset"] = next_page_token or 0
 
         return params
@@ -209,20 +231,26 @@ class CreativesStream(CriteoStream):
 
     name = "creatives"
     path = "/2026-01/marketing-solutions/advertisers/{advertiserId}/creatives"
-    schema_filepath = SCHEMAS_DIR / "creative.json"
+    schema = StreamSchema(SCHEMAS_DIR, key="creative")
 
     parent_stream_type = AdvertisersStream
     ignore_parent_replication_key = True
 
+    @override
+    def get_new_paginator(self) -> BaseOffsetPaginator:
+        """Return a new paginator for this API endpoint."""
+        return BaseOffsetPaginator(start_value=0, page_size=PAGE_SIZE)
+
+    @override
     def get_url_params(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any | None,  # noqa: ANN401
+        context: Context | None,
+        next_page_token: int | None,
     ) -> dict[str, Any]:
         """Return a dictionary of values to be used in URL parameterization."""
         params: dict = {}
 
-        params["limit"] = 50
+        params["limit"] = PAGE_SIZE
         params["offset"] = next_page_token or 0
 
         return params

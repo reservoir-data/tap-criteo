@@ -2,14 +2,20 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+import sys
+from typing import TYPE_CHECKING, Any
 
 from singer_sdk.streams import RESTStream
 
 from tap_criteo.auth import CriteoAuthenticator
 
-SCHEMAS_DIR = Path(__file__).parent / "./schemas"
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
+if TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context, Record
 
 
 class CriteoStream(RESTStream):
@@ -21,33 +27,23 @@ class CriteoStream(RESTStream):
 
     primary_keys = ("id",)
 
+    @override
     @property
     def authenticator(self) -> CriteoAuthenticator:
-        """Return a new authenticator object.
-
-        Returns:
-            The authenticator instance for this stream.
-        """
-        return CriteoAuthenticator.create_for_stream(self)
-
-    @property
-    def http_headers(self) -> dict:
-        """Return the http headers needed.
-
-        Returns:
-            A dictionary of HTTP headers.
-        """
-        headers = {}
-        if "user_agent" in self.config:
-            headers["User-Agent"] = self.config.get("user_agent")
-        return headers
+        """Return a new authenticator object."""
+        return CriteoAuthenticator(
+            client_id=self.config["client_id"],
+            client_secret=self.config["client_secret"],
+            auth_endpoint="https://api.criteo.com/oauth2/token",
+        )
 
     # flatten attributes field
+    @override
     def post_process(
         self,
-        row: dict,
-        context: dict | None = None,  # noqa: ARG002
-    ) -> dict | None:
+        row: Record,
+        context: Context | None = None,
+    ) -> Record | None:
         """Flatten the 'attributes' dictionary into top-level."""
         if "attributes" in row and isinstance(row["attributes"], dict):
             attributes = row.pop("attributes")
@@ -60,12 +56,13 @@ class CriteoStream(RESTStream):
 class CriteoSearchStream(CriteoStream):
     """Search stream."""
 
-    rest_method = "post"
+    http_method = "post"
 
+    @override
     def prepare_request_payload(
         self,
-        context: dict | None,  # noqa: ARG002
-        next_page_token: Any,  # noqa: ARG002, ANN401
+        context: Context | None,
+        next_page_token: Any,
     ) -> dict:
         """Prepare request payload.
 
