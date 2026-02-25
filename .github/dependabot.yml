@@ -11,7 +11,5 @@ updates:
       interval: "daily"
       time: "10:23"
       timezone: "America/Mexico_City"
-    reviewers:
-      - "edgarrmondragon"
     labels:
       - "pip dependencies"
