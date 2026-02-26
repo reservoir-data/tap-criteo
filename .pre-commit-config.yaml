@@ -22,3 +22,13 @@ repos:
   - id: ruff-check
     args: [--fix, --exit-non-zero-on-fix, --show-fixes]
   - id: ruff-format
+
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.36.1
+  hooks:
+  - id: check-github-workflows
+  - id: check-meltano
+  - id: check-renovate
+    language: python
+    additional_dependencies:
+    - pyjson5==2.0.0
