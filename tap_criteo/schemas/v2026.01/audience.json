@@ -1,0 +1,75 @@
+{
+   "type":"object",
+   "properties":{
+      "id":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"Id of the entity"
+      },
+      "type":{
+         "type":[
+            "string",
+            "null"
+         ]
+      },
+      "name":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"Name of the audience"
+      },
+      "description":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"Description of the audience"
+      },
+      "advertiserId":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"Advertiser associated to the audience"
+      },
+      "adSetIds":{
+         "type":[
+            "array",
+            "null"
+         ],
+         "items":{
+            "type":[
+               "string",
+               "null"
+            ]
+         },
+         "description":"Ad sets associated to the audience"
+      },
+      "algebra":{
+         "type":[
+            "object",
+            "null"
+         ],
+         "description":"Node in the audience algebra definition."
+      },
+      "createdAt":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "format":"date-time",
+         "description":"ISO-8601 timestamp in UTC of audience creation (read-only)"
+      },
+      "updatedAt":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "format":"date-time",
+         "description":"ISO-8601 timestamp in UTC of audience update (read-only)"
+      }
+   }
+}

@@ -1,30 +1,37 @@
 """Criteo tap class."""
 
-from typing import Dict, List, Type
+from __future__ import annotations
+
+import sys
+from typing import TYPE_CHECKING
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
-from tap_criteo.client import CriteoStream
-from tap_criteo.streams import v202007, v202104, v202107
+from tap_criteo.streams import v202601
 
-OBJECT_STREAMS: Dict[str, List[Type[CriteoStream]]] = {
-    "legacy": [
-        v202007.AudiencesStream,
-        v202007.CampaignsStream,
-        v202007.CategoriesStream,
-    ],
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from tap_criteo.client import CriteoStream
+
+OBJECT_STREAMS: dict[str, list[type[CriteoStream]]] = {
     "current": [
-        v202104.AudiencesStream,
-        v202104.AdvertisersStream,
-        v202104.AdSetsStream,
-    ],
-    "preview": [
-        v202107.CampaignsStream,
+        v202601.AudiencesStream,
+        v202601.AdvertisersStream,
+        v202601.CampaignsStream,
+        v202601.AdSetsStream,
+        v202601.AdsStream,
+        v202601.CreativesStream,
     ],
 }
 
-REPORTS_BASE = v202104.StatsReportStream
+REPORTS_BASE = v202601.StatsReportStream
 
 
 class TapCriteo(Tap):
@@ -54,15 +61,12 @@ class TapCriteo(Tap):
         ),
     ).to_dict()
 
-    def discover_streams(self) -> List[Stream]:
-        """Return a list of discovered streams.
-
-        Returns:
-            List of stream instances.
-        """
+    @override
+    def discover_streams(self) -> Sequence[Stream]:
+        """Return a list of discovered streams."""
         objects = [
             stream_class(tap=self)
-            for api in ("current", "preview")
+            for api in ("current",)
             for stream_class in OBJECT_STREAMS[api]
         ]
 

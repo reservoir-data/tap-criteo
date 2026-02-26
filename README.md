@@ -7,7 +7,7 @@ Built with the Meltano [SDK](https://gitlab.com/meltano/sdk) for Singer Taps.
 ## Installation
 
 ```bash
-pipx install git+https://github.com/reservoir-data/tap-criteo.git
+uv tool install git+https://github.com/reservoir-data/tap-criteo.git
 ```
 
 ## Configuration
@@ -41,8 +41,7 @@ tap-criteo --config CONFIG --discover > ./catalog.json
 ### Initialize your Development Environment
 
 ```bash
-pipx install poetry
-poetry install
+uv sync
 ```
 
 ### Create and Run Tests
@@ -51,13 +50,13 @@ Create tests within the `tap_criteo/tests` subfolder and
   then run:
 
 ```bash
-poetry run pytest
+uv run pytest
 ```
 
-You can also test the `tap-criteo` CLI interface directly using `poetry run`:
+You can also test the `tap-criteo` CLI interface directly using `uv run`:
 
 ```bash
-poetry run tap-criteo --help
+uv run tap-criteo --help
 ```
 
 ### Testing with [Meltano](https://www.meltano.com)
@@ -69,7 +68,7 @@ Install Meltano (if you haven't already) and any needed plugins:
 
 ```bash
 # Install meltano
-pipx install meltano
+uv tool install meltano
 # Initialize meltano within this directory
 cd tap-criteo
 meltano install
@@ -80,8 +79,8 @@ Now you can test and orchestrate using Meltano:
 ```bash
 # Test invocation:
 meltano invoke tap-criteo --version
-# OR run a test `elt` pipeline:
-meltano elt tap-criteo target-jsonl
+# OR run an EL pipeline:
+meltano run tap-criteo target-jsonl
 ```
 
 ### SDK Dev Guide

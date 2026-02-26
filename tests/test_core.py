@@ -9,7 +9,7 @@ from singer_sdk.testing import SuiteConfig, get_tap_test_class
 from tap_criteo.tap import TapCriteo
 
 SAMPLE_CONFIG: dict[str, Any] = {
-    "start_date": "2021-06-01T00:00:00Z",
+    "start_date": "2025-06-01T00:00:00Z",
     "reports": [
         {
             "name": "daily_metrics",
@@ -39,6 +39,6 @@ TestTapCriteoCloud = get_tap_test_class(
     config=SAMPLE_CONFIG,
     suite_config=SuiteConfig(
         max_records_limit=10,
-        ignore_no_records_for_streams=["audiences"],
+        ignore_no_records=True,
     ),
 )

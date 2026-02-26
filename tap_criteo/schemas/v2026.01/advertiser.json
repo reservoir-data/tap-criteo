@@ -1,0 +1,32 @@
+{
+   "type":"object",
+   "properties":{
+      "id":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"A opaque string containing the unique Id of the entity"
+      },
+      "type":{
+         "type":[
+            "string",
+            "null"
+         ],
+         "description":"A string containing the entity type"
+      },
+      "meta":{
+         "type":[
+            "object",
+            "null"
+         ],
+         "description":"A meta object that contains application-specific metadata"
+      },
+      "advertiserName":{
+         "type":[
+            "string",
+            "null"
+         ]
+      }
+   }
+}
