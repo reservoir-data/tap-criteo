@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any
 
 from dateutil.parser import parse
 from singer_sdk import SchemaDirectory, StreamSchema
-from singer_sdk.pagination import BaseOffsetPaginator
+from singer_sdk.pagination import OffsetPaginator
 
 from tap_criteo import schemas
 from tap_criteo.client import CriteoSearchStream, CriteoStream
@@ -207,9 +207,9 @@ class AdsStream(CriteoStream):
     ignore_parent_replication_key = True
 
     @override
-    def get_new_paginator(self) -> BaseOffsetPaginator:
+    def get_new_paginator(self) -> OffsetPaginator:
         """Return a new paginator for this API endpoint."""
-        return BaseOffsetPaginator(start_value=0, page_size=PAGE_SIZE)
+        return OffsetPaginator(start_value=0, page_size=PAGE_SIZE)
 
     @override
     def get_url_params(
@@ -237,9 +237,9 @@ class CreativesStream(CriteoStream):
     ignore_parent_replication_key = True
 
     @override
-    def get_new_paginator(self) -> BaseOffsetPaginator:
+    def get_new_paginator(self) -> OffsetPaginator:
         """Return a new paginator for this API endpoint."""
-        return BaseOffsetPaginator(start_value=0, page_size=PAGE_SIZE)
+        return OffsetPaginator(start_value=0, page_size=PAGE_SIZE)
 
     @override
     def get_url_params(
