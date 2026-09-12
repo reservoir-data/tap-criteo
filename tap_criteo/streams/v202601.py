@@ -2,18 +2,22 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import sys
-from datetime import datetime, timezone
 from importlib.resources import files
 from typing import TYPE_CHECKING, Any
 
-from dateutil.parser import parse
 from singer_sdk import SchemaDirectory, StreamSchema
 from singer_sdk.pagination import OffsetPaginator
 
 from tap_criteo import schemas
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
+
+if sys.version_info < (3, 11):
+    from backports.datetime_fromisoformat import MonkeyPatch
+
+    MonkeyPatch.patch_fromisoformat()
 
 if sys.version_info >= (3, 12):
     from typing import override
@@ -26,7 +30,7 @@ if TYPE_CHECKING:
 
 PAGE_SIZE = 50
 SCHEMAS_DIR = SchemaDirectory(files(schemas) / "v2026.01")
-UTC = timezone.utc
+UTC = dt.timezone.utc
 
 
 class AudiencesStream(CriteoSearchStream):
@@ -154,8 +158,8 @@ class StatsReportStream(CriteoStream):
         Returns:
             Dictionary for the JSON body of the request.
         """
-        start_date = parse(self.config["start_date"])
-        end_date = datetime.now(UTC)
+        start_date = dt.datetime.fromisoformat(self.config["start_date"])
+        end_date = dt.datetime.now(UTC)
 
         advertiser_ids = ",".join(self.config.get("advertiser_ids", []))
 

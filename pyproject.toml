@@ -28,8 +28,8 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
+    'backports-datetime-fromisoformat>=2.0.1; python_version<"3.11"',
     "singer-sdk==0.55.0a1",
-    "python-dateutil==2.9.0.post0",
     "typing-extensions>=4.15.0 ; python_full_version < '3.12'",
 ]
 
@@ -57,7 +57,6 @@ testing = [
 typing = [
     { include-group = "testing" },
     "mypy>=1.19.1",
-    "types-python-dateutil>=2.9.0.20260124",
 ]
 
 [tool.hatch.version]
@@ -66,14 +65,15 @@ source = "vcs"
 
 [tool.uv]
 default-groups = "all"
+required-version = ">=0.12"
 
 [tool.ruff]
 line-length = 88
-required-version = ">=0.15"
-target-version = "py310"
+required-version = ">=0.16"
 
 [tool.ruff.lint]
 ignore = [
+  "CPY",
   "FIX002",  # line-contains-todo
 ]
 select = ["ALL"]
@@ -86,6 +86,7 @@ unfixable = [
 "tests/*" = [
   "ANN201",
   "S101",
+  "INP001",
 ]
 
 [tool.ruff.lint.pydocstyle]

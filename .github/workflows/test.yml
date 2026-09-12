@@ -17,40 +17,51 @@ permissions:
 env:
   FORCE_COLOR: "1"
   # renovate: datasource=pypi depName=uv
-  UV_VERSION: 0.10.6
+  UV_VERSION: 0.12.7
   # renovate: datasource=pypi depName=nox
-  NOX_VERSION: 2026.4.10
+  NOX_VERSION: 2026.8.17
 
 jobs:
+  build-package:
+    name: Build & verify package
+    runs-on: ubuntu-24.04
+    outputs:
+      supported-python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: hynek/build-and-inspect-python-package@2abe76da66d0a6a4a227101f9348ee855797cfa5 # v3.0.1
+        id: baipp
+
   tests:
+    name: Test
     runs-on: ubuntu-latest
+    needs: build-package
     env:
-      NOXSESSION: ${{ matrix.session }}-${{ matrix.python-version }}
+      NOXSESSION: tests-${{ matrix.python-version }}
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
-        include:
-        - {python-version: "3.14", session: "tests"}
-        - {python-version: "3.13", session: "tests"}
-        - {python-version: "3.12", session: "tests"}
-        - {python-version: "3.11", session: "tests"}
-        - {python-version: "3.10", session: "tests"}
+        python-version: ${{ fromJson(needs.build-package.outputs.supported-python-versions) }}
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 0
+        persist-credentials: false
 
-    - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+    - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
       with:
         python-version: ${{ matrix.python-version }}
         version: ${{ env.UV_VERSION }}
 
     - name: Install Nox
       run: |
-        uv tool install --with nox==${{ env.NOX_VERSION }} nox
+        uv tool install --with nox=="${NOX_VERSION}" nox
         nox --version
 
     - name: Run Nox
