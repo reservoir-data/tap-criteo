@@ -10,11 +10,6 @@ from typing import TYPE_CHECKING, Any
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
 
-if sys.version_info < (3, 11):
-    from backports.datetime_fromisoformat import MonkeyPatch
-
-    MonkeyPatch.patch_fromisoformat()
-
 if sys.version_info >= (3, 12):
     from typing import override
 else:
@@ -25,7 +20,6 @@ if TYPE_CHECKING:
     from singer_sdk.tap_base import Tap
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
-UTC = dt.timezone.utc
 
 
 class AudiencesStream(CriteoStream):
@@ -122,7 +116,7 @@ class StatsReportStream(CriteoStream):
             Dictionary for the JSON body of the request.
         """
         start_date = dt.datetime.fromisoformat(self.config["start_date"])
-        end_date = dt.datetime.now(UTC)
+        end_date = dt.datetime.now(dt.UTC)
 
         return {
             "dimensions": self.dimensions,

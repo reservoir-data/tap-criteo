@@ -2,17 +2,15 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import datetime as dt
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-UTC = timezone.utc
 
-
-def _parse_date(date: str) -> datetime:
+def _parse_date(date: str) -> dt.datetime:
     """Parse date.
 
     Args:
@@ -21,7 +19,7 @@ def _parse_date(date: str) -> datetime:
     Returns:
         Parsed date.
     """
-    return datetime.strptime(date, "%m/%d/%Y %H:%M:%S").replace(tzinfo=UTC)
+    return dt.datetime.strptime(date, "%m/%d/%Y %H:%M:%S").replace(tzinfo=dt.UTC)
 
 
 analytics_type_mappings = {
