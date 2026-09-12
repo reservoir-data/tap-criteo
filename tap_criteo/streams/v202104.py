@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from dateutil.parser import parse
-
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
+
+if sys.version_info < (3, 11):
+    from backports.datetime_fromisoformat import MonkeyPatch
+
+    MonkeyPatch.patch_fromisoformat()
 
 if sys.version_info >= (3, 12):
     from typing import override
@@ -22,7 +25,7 @@ if TYPE_CHECKING:
     from singer_sdk.tap_base import Tap
 
 SCHEMAS_DIR = Path(__file__).parent.parent / "./schemas"
-UTC = timezone.utc
+UTC = dt.timezone.utc
 
 
 class AudiencesStream(CriteoStream):
@@ -118,8 +121,8 @@ class StatsReportStream(CriteoStream):
         Returns:
             Dictionary for the JSON body of the request.
         """
-        start_date = parse(self.config["start_date"])
-        end_date = datetime.now(UTC)
+        start_date = dt.datetime.fromisoformat(self.config["start_date"])
+        end_date = dt.datetime.now(UTC)
 
         return {
             "dimensions": self.dimensions,
