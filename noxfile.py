@@ -16,10 +16,10 @@ tests_dir = "tests"
 locations = src_dir, tests_dir, "noxfile.py"
 nox.needs_version = ">=2025.2.9"
 nox.options.default_venv_backend = "uv"
-nox.options.sessions = (
+nox.options.sessions = [
     "mypy",
     "tests",
-)
+]
 
 UV_SYNC_COMMAND = (
     "uv",
