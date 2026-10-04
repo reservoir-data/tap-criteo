@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.15'",
@@ -916,7 +916,7 @@ wheels = [
 
 [[package]]
 name = "singer-sdk"
-version = "0.55.0b2"
+version = "0.55.0b3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -939,9 +939,9 @@ dependencies = [
     { name = "universal-pathlib" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f7/e7/e7228da8b47a2901101e945f0e4ed80df635717530c4b2397ebc9211ffd0/singer_sdk-0.55.0b2.tar.gz", hash = "sha256:1e6c4502c10d513194c87545f3d4500284b0dd80358272a9305b864a3d03d09b", size = 1391999, upload-time = "2026-09-17T21:58:54.836Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/6f/9474e862d0e64a8b1d812eeadfcbf0be614051ac7497fdf6d72a498ae51e/singer_sdk-0.55.0b3.tar.gz", hash = "sha256:f99d88731a3732fc88f2d19f1d28ed2cfae62d078469b73d01dd158f0eb6024d", size = 1392321, upload-time = "2026-09-25T23:49:39.049Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/68/36/ea2be03ec7d157a90507f9caddb5a7d4b397ac46a2a0e1b9e3ab2f5b3e10/singer_sdk-0.55.0b2-py3-none-any.whl", hash = "sha256:26dc8038c2efdb5ec2c18410676df6fc4296fc5ca9a68fffd7ecd6a80e8c31c6", size = 223757, upload-time = "2026-09-17T21:58:53.008Z" },
+    { url = "https://files.pythonhosted.org/packages/de/60/bdee3360117f9e73f9f7a3108188f8073d67eb8460825173855038fc004b/singer_sdk-0.55.0b3-py3-none-any.whl", hash = "sha256:55858c7120dd5eb141dc1f2476f8cafebf9435d5419f194e303def003823b7f9", size = 223790, upload-time = "2026-09-25T23:49:37.469Z" },
 ]
 
 [package.optional-dependencies]
@@ -1034,6 +1034,7 @@ wheels = [
 [[package]]
 name = "tap-criteo"
 source = { editable = "." }
+default-groups = "all"
 dependencies = [
     { name = "singer-sdk" },
     { name = "typing-extensions", marker = "python_full_version < '3.12'" },
@@ -1062,7 +1063,7 @@ typing = [
 
 [package.metadata]
 requires-dist = [
-    { name = "singer-sdk", specifier = "==0.55.0b2" },
+    { name = "singer-sdk", specifier = "==0.55.0b3" },
     { name = "typing-extensions", marker = "python_full_version < '3.12'", specifier = ">=4.15.0" },
 ]
 
