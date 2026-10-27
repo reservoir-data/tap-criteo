@@ -2,18 +2,12 @@
 
 from __future__ import annotations
 
-import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from singer_sdk import Stream, Tap
 from singer_sdk import typing as th
 
 from tap_criteo.streams import v202601
-
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

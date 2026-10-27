@@ -22,8 +22,6 @@ tap-criteo --about
 
 ### Source Authentication and Authorization
 
-
-
 ## Usage
 
 You can easily run `tap-criteo` by itself or in a pipeline using [Meltano](www.meltano.com).
@@ -47,7 +45,7 @@ uv sync
 ### Create and Run Tests
 
 Create tests within the `tap_criteo/tests` subfolder and
-  then run:
+then run:
 
 ```bash
 uv run pytest

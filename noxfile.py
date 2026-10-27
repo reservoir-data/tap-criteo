@@ -1,3 +1,9 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# dependencies = ["nox"]
+# ///
+
 """Nox configuration."""
 
 from __future__ import annotations
@@ -14,12 +20,8 @@ src_dir = "tap_criteo"
 tests_dir = "tests"
 
 locations = src_dir, tests_dir, "noxfile.py"
-nox.needs_version = ">=2025.2.9"
+nox.needs_version = ">=2026.10.20"
 nox.options.default_venv_backend = "uv"
-nox.options.sessions = [
-    "mypy",
-    "tests",
-]
 
 UV_SYNC_COMMAND = (
     "uv",
@@ -29,7 +31,7 @@ UV_SYNC_COMMAND = (
 )
 
 
-@nox.session()
+@nox.session(default=True)
 def mypy(session: nox.Session) -> None:
     """Check types with mypy."""
     env = {
@@ -50,7 +52,7 @@ def mypy(session: nox.Session) -> None:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
-@nox.session(python=PYTHON_VERSIONS)
+@nox.session(python=PYTHON_VERSIONS, default=True)
 def tests(session: nox.Session) -> None:
     """Execute pytest tests and compute coverage."""
     env = {
@@ -65,3 +67,7 @@ def tests(session: nox.Session) -> None:
         env=env,
     )
     session.run("pytest", *session.posargs)
+
+
+if __name__ == "__main__":
+    nox.main()

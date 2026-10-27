@@ -1,92 +1,101 @@
 [build-system]
-requires = [
-  "hatchling>=1,<2",
-  "hatch-vcs",
-]
 build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs",
+  "hatchling>=1,<2",
+]
 
 [project]
 name = "tap-criteo"
-dynamic = ["version"]
-description = "`tap-criteo` is a Singer tap for Criteo, built with the Meltano SDK for Singer Taps."
-authors = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
-requires-python = ">=3.11"
+description = "Singer tap for Criteo, built with the Meltano SDK for Singer Taps."
 readme = "README.md"
-license = "Apache-2.0"
-maintainers = [{ name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" }]
 keywords = [
-    "ELT",
-    "singer.io",
-    "Criteo",
+  "Criteo",
+  "ELT",
+  "singer.io",
 ]
+license = "Apache-2.0"
+requires-python = ">=3.13"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: 3.15",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
 ]
+dynamic = [ "version" ]
 dependencies = [
-    "singer-sdk==0.55.0b3",
-    "typing-extensions>=4.15.0 ; python_full_version < '3.12'",
+  "singer-sdk==0.55.0b7",
+  "typing-extensions>=4.15; python_full_version<'3.12'",
 ]
-
+[[project.maintainers]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
+[[project.authors]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
 [project.urls]
+Documentation = "https://github.com/reservoir-data/tap-criteo/#readme"
 Homepage = "https://github.com/reservoir-data/tap-criteo"
 Repository = "https://github.com/reservoir-data/tap-criteo"
-Documentation = "https://github.com/reservoir-data/tap-criteo/#readme"
-
 [project.scripts]
 tap-criteo = "tap_criteo.tap:TapCriteo.cli"
 
 [dependency-groups]
 dev = [
-    { include-group = "testing" },
-    { include-group = "typing" },
+  { include-group = "testing" },
+  { include-group = "typing" },
 ]
 ci = [
-    { include-group = "testing" },
-    "pytest-github-actions-annotate-failures>=0.3",
+  { include-group = "testing" },
+  "pytest-github-actions-annotate-failures>=0.3",
 ]
 testing = [
-    "pytest>=9",
-    "singer-sdk[testing]",
+  "pytest>=9",
+  "singer-sdk[testing]",
 ]
 typing = [
-    { include-group = "testing" },
-    "mypy>=1.19.1",
+  { include-group = "testing" },
+  "mypy>=2.4",
 ]
 
 [tool.hatch.version]
-fallback-version = "0.0.0.dev0"
 source = "vcs"
+fallback-version = "0.0.0.dev0"
 
 [tool.uv]
+required-version = ">=0.13"
 default-groups = "all"
-required-version = ">=0.12"
 
 [tool.ruff]
+required-version = ">=0.17"
 line-length = 88
-required-version = ">=0.16"
-
 [tool.ruff.lint]
+select = [ "ALL" ]
 ignore = [
   "CPY",
-  "FIX002",  # line-contains-todo
+  "FIX002", # line-contains-todo
 ]
-select = ["ALL"]
-unfixable = [
-  "ERA001",  # commented-out-code
-]
-
-[tool.ruff.lint.per-file-ignores]
-"noxfile.py" = ["ANN", "INP001"]
-"tests/*" = [
+per-file-ignores."noxfile.py" = [ "ANN", "INP001" ]
+per-file-ignores."tests/*" = [
   "ANN201",
-  "S101",
   "INP001",
+  "S101",
 ]
+unfixable = [
+  "ERA001", # commented-out-code
+]
+pydocstyle.convention = "google"
 
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+[tool.pyproject-fmt]
+table_format = "long"
+
+[tool.pytest]
+addopts = [ "-ra" ]
+filterwarnings = [
+  "error",
+  "once:Fields in transformed catalog but not in records:UserWarning",
+]
+log_level = "INFO"
+minversion = "9"
+strict = true
+testpaths = [ "tests" ]
