@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import datetime as dt
-import sys
 from importlib.resources import files
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, override
 
 from singer_sdk import SchemaDirectory, StreamSchema
 from singer_sdk.pagination import OffsetPaginator
@@ -13,11 +12,6 @@ from singer_sdk.pagination import OffsetPaginator
 from tap_criteo import schemas
 from tap_criteo.client import CriteoSearchStream, CriteoStream
 from tap_criteo.streams.reports import analytics_type_mappings, value_func_mapping
-
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override
 
 if TYPE_CHECKING:
     from singer_sdk.helpers.types import Context, Record
